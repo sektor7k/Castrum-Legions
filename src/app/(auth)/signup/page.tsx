@@ -12,38 +12,85 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
+import { toast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
 
-export default function LoginPage() {
+export default function SignupFormDemo() {
 
     const router = useRouter();
 
     const [user, setUser] = useState({
+        username: "",
         email: "",
-        password: ""
+        password: "",
+        password2: ""
     })
 
-    const onLogin = async () => {
+    const onSignup = async () => { 
+
+        // Şifre uyumunu kontrol et
+        if (user.password !== user.password2) {
+            showErrorToast("Passwords do not match.")
+            return;
+        }
+
+        // Şifrenin uzunluğunu kontrol et
+        if (user.password.length < 6) {
+            showErrorToast("Password must be at least 6 characters.")
+            return;
+        }     
         try {
 
-            const response = await axios.post("/api/users/login", user);
-            console.log("Login success", response.data.message);
-            router.push("/profile2")
+            const response = await axios.post("/api/users/signup", user);
+            console.log("Signup success", response.data);
+            router.push("/login");
+            showToast(response.data.message);
+            
         } catch (error: any) {
-            console.log("Login failed", error.message);
+            const errorMessage = error.response.data.message;
+            showErrorToast(errorMessage);
+           
         }
     }
+
+    function showErrorToast(message: string): void {
+        toast({
+            variant: "destructive",
+            title: "Signup failed",
+            description: message,
+        })
+    }
+
+    function showToast(message: string): void {
+        toast({
+            variant: "default",
+            title: "Signup Succesfuly",
+            description: message,
+        })
+    }
+
+    
     return (
-        <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black border border-gray-700 ">
-            <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
-                LOGIN
-            </h2>
+        <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black border border-gray-700">
+            <h1 className="font-bold text-2xl text-neutral-800 dark:text-neutral-200">
+                SIGNUP
+            </h1>
             <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-                    Castrum Legionsa hoş geldiniz. Unutmayın biz bir aileyiz
-                </p>
+                Castrum Legions a hoş geldiniz unutmayın biz bir aileyiz
+            </p>
 
             <div className="my-8" >
                 <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
-
+                    <LabelInputContainer>
+                        <Label htmlFor="username">User name</Label>
+                        <Input
+                            id="username"
+                            placeholder="Tyler"
+                            type="text"
+                            value={user.username}
+                            onChange={(e) => setUser({ ...user, username: e.target.value })}
+                        />
+                    </LabelInputContainer>
                 </div>
                 <LabelInputContainer className="mb-4">
                     <Label htmlFor="email">Email Address</Label>
@@ -65,19 +112,27 @@ export default function LoginPage() {
                         onChange={(e) => setUser({ ...user, password: e.target.value })}
                     />
                 </LabelInputContainer>
+                <LabelInputContainer className="mb-4">
+                    <Label htmlFor="password2">Password confirm</Label>
+                    <Input
+                        id="password2"
+                        placeholder="••••••••"
+                        type="password"
+                        value={user.password2}
+                        onChange={(e) => setUser({ ...user, password2: e.target.value })}
+                    />
+                </LabelInputContainer>
 
-
-                <button onClick={onLogin}
+                <button onClick={onSignup}
                     className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
                     type="submit"
                 >
-                    Login &rarr;
+                    Sign up &rarr;
                     <BottomGradient />
                 </button>
-                <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-                    <Link href={"/signup"}>Sign up if you dont have an account</Link>
-                </p>
-
+                <Button variant={"link"} onClick={() => router.push("/login")} className=" text-gray-500 mt-3">
+                    Already a member? Login
+                </Button>
                 <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
 
                 <div className="flex flex-col space-y-4">

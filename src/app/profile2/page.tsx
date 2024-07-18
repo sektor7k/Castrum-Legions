@@ -5,13 +5,15 @@ import dynamic from "next/dynamic";
 import axios from "axios";
 import { useState } from "react";
 import { Button } from "@/components/ui/button"
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { toast } from "@/components/ui/use-toast";
 
 const World = dynamic(() => import("@/components/ui/globe").then((m) => m.World), {
     ssr: false,
 });
 
 export default function GlobeDemo() {
+
 
     const router = useRouter();
     const [data, setData] = useState("nothing");
@@ -27,13 +29,24 @@ export default function GlobeDemo() {
 
     const logout = async () => {
         try {
-            await axios.get("/api/users/logout")
-            
+            const response = await axios.get("/api/users/logout")
             router.push("/login")
+            showToast(response.data.message)
 
         } catch (error: any) {
             console.log(error.message);
+            
         }
+    }
+
+
+
+    function showToast(message: string): void {
+        toast({
+            variant: "default",
+            title: "Logout successful",
+            description: message,
+        })
     }
 
 
@@ -453,7 +466,7 @@ export default function GlobeDemo() {
                     <World data={sampleArcs} globeConfig={globeConfig} />
                 </div>
             </div>
-            <Button onClick={logout} className=" mt-20" variant={"default"} >Çıkış Yap</Button>
+            <Button onClick={logout} className=" mt-20" variant={"default"} size={"lg"} >Çıkış Yap</Button>
         </div>
     );
 }

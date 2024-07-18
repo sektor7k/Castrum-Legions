@@ -12,51 +12,62 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
+import { useToast } from "@/components/ui/use-toast"
+import { Button } from "@/components/ui/button";
 
-export default function SignupFormDemo() {
+
+export default function LoginPage() {
 
     const router = useRouter();
+    const { toast } = useToast()
 
     const [user, setUser] = useState({
-        username: "",
         email: "",
         password: ""
     })
 
-    const onSignup = async () => { 
+    const onLogin = async () => {
         try {
-            console.log("buraya geldi")
-            const response = await axios.post("/api/users/signup", user);
-            console.log("Signup success", response.data.message);
-            router.push("/login");
-            
+            const response = await axios.post("/api/users/login", user);
+            const responseMessage = response.data.message;
+            router.push("/profile2")
+            showToast(responseMessage);
         } catch (error: any) {
-            console.log("Signup failed", error.message);
+            const errorMessage = error.response.data.message;
+            showErrorToast(errorMessage);
 
-           
         }
     }
+
+    function showErrorToast(message: string): void {
+        toast({
+            variant: "destructive",
+            title: "Logion failed",
+            description: message,
+        })
+    }
+
+    function showToast(message: string): void {
+        toast({
+            variant: "default",
+            title: "Logion Succesfuly",
+            description: message,
+        })
+    }
+
+
     return (
-        <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black border border-gray-700">
-            <h1 className="font-bold text-2xl text-neutral-800 dark:text-neutral-200">
-                SIGNUP
-            </h1>
+        <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black border border-gray-700 ">
+            <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
+                LOGIN
+            </h2>
             <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-                Castrum Legions a hoş geldiniz unutmayın biz bir aileyiz
+                Castrum Legionsa hoş geldiniz. Unutmayın biz bir aileyiz
             </p>
 
             <div className="my-8" >
                 <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
-                    <LabelInputContainer>
-                        <Label htmlFor="username">User name</Label>
-                        <Input
-                            id="username"
-                            placeholder="Tyler"
-                            type="text"
-                            value={user.username}
-                            onChange={(e) => setUser({ ...user, username: e.target.value })}
-                        />
-                    </LabelInputContainer>
+
                 </div>
                 <LabelInputContainer className="mb-4">
                     <Label htmlFor="email">Email Address</Label>
@@ -78,25 +89,20 @@ export default function SignupFormDemo() {
                         onChange={(e) => setUser({ ...user, password: e.target.value })}
                     />
                 </LabelInputContainer>
-                <LabelInputContainer className="mb-4">
-                    <Label htmlFor="password2">Password</Label>
-                    <Input
-                        id="password2"
-                        placeholder="••••••••"
-                        type="password"
-                    />
-                </LabelInputContainer>
 
-                <button onClick={onSignup}
+
+                <button onClick={onLogin}
                     className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
                     type="submit"
                 >
-                    Sign up &rarr;
+                    Login &rarr;
                     <BottomGradient />
                 </button>
-                <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-                    <Link href={"/login"}>if you already have an account, log in</Link>
-                </p>
+                
+                <Button variant={"link"} onClick={() => router.push("/signup")} className=" text-gray-500 mt-3">
+                    Don&apos;t have an account? Register
+                </Button>
+
                 <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
 
                 <div className="flex flex-col space-y-4">
