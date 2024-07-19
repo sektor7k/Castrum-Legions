@@ -11,10 +11,8 @@ import {
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast" 
 import { Button } from "@/components/ui/button";
-import ModeToggle from "@/components/ModeToggle";
 
 
 export default function LoginPage() {
@@ -31,7 +29,7 @@ export default function LoginPage() {
         try {
             const response = await axios.post("/api/users/login", user);
             const responseMessage = response.data.message;
-            router.push("/profile2")
+            router.push("/")
             showToast(responseMessage);
         } catch (error: any) {
             const errorMessage = error.response.data.message;
@@ -138,7 +136,6 @@ export default function LoginPage() {
                         <BottomGradient />
                         
                     </button>
-                    <ModeToggle/>
                 </div>
             </div>
         </div>

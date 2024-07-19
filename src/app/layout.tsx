@@ -4,7 +4,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider";
-import Navbar from "@/components/Navbar";
 
 
 
@@ -36,7 +35,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <main>
-            <Navbar/>
+            
             {children}
           </main>
           <Toaster />

@@ -7,7 +7,7 @@ import { DropdownMenuDemo } from "@/components/Menu"
 import ModeToggle from "@/components/ModeToggle"
 
 
-export default function Component() {
+export  function Navbar() {
     return (
         <nav className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90">
             <div className="w-full max-w-7xl mx-auto px-4">
@@ -47,10 +47,7 @@ export default function Component() {
                         </Link>
                     </nav>
                     <div className="flex items-center gap-4">
-                        <Button variant="outline" size="sm">
-                            Sign in
-                        </Button>
-                        <Button size="sm">Sign up</Button>
+                        
                         <DropdownMenuDemo/>
                         <ModeToggle/>
 
@@ -81,5 +78,3 @@ function MountainIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) 
         </svg>
     )
 }
-
-
