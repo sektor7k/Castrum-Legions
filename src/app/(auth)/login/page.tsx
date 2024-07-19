@@ -12,8 +12,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast" 
 import { Button } from "@/components/ui/button";
+import ModeToggle from "@/components/ModeToggle";
 
 
 export default function LoginPage() {
@@ -135,7 +136,9 @@ export default function LoginPage() {
                             OnlyFans
                         </span>
                         <BottomGradient />
+                        
                     </button>
+                    <ModeToggle/>
                 </div>
             </div>
         </div>

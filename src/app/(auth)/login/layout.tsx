@@ -3,5 +3,5 @@ export default function LoginLayout({
   }: {
     children: React.ReactNode
   }) {
-    return <section className="min-h-screen flex justify-center items-center bg-white dark:bg-black">{children}</section>
+    return <section className="min-h-screen flex justify-center items-center ">{children}</section>
   }

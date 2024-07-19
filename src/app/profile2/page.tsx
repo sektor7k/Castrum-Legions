@@ -467,6 +467,7 @@ export default function GlobeDemo() {
                 </div>
             </div>
             <Button onClick={logout} className=" mt-20" variant={"default"} size={"lg"} >Çıkış Yap</Button>
+            
         </div>
     );
 }
