@@ -26,15 +26,54 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
         });
 
         const mailOptions = {
-            from: '"omeraydin2112@gmail.com',
+            from: 'omeraydin2112@gmail.com',
             to: email,
             subject: emailType === "VERIFY" ? "Verify your email" : "Reset your password",
             text: "Hello world?",
-            html: `<p>Click <a href="${process.env.DOMAIN}/verifyemail?token=${hashedToken}">here</a> 
-            to ${emailType === "VERIFY" ? "verify your email" : "reset your password"}
-            or copy and paste the link below in your browser. <br> 
-            ${process.env.DOMAIN}/verifyemail?token=${hashedToken}
-            </p>`,
+            html: `<html>
+            <head>
+              <style>
+                body {
+                  font-family: Arial, sans-serif;
+                  background-color: #f4f4f9;
+                  color: #333;
+                  padding: 20px;
+                }
+                .button {
+                  display: inline-block;
+                  padding: 10px 20px;
+                  margin: 10px 0;
+                  background-color: #4CAF50;
+                  color: white;
+                  border-radius: 5px;
+                  text-decoration: none;
+                }
+                .button:hover {
+                  background-color: #45a049;
+                }
+                .content {
+                  background-color: white;
+                  padding: 20px;
+                  border-radius: 8px;
+                  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                }
+              </style>
+            </head>
+            <body>
+              <div class="content">
+                <h1>Welcome to Our Service!</h1>
+                <p>Thank you for signing up. Please complete your registration process.</p>
+                <p>Click the button below to ${emailType === "VERIFY" ? "verify your email" : "reset your password"}:</p>
+                <a href="${process.env.DOMAIN}/verifyemail?token=${hashedToken}" class="button">
+                  ${emailType === "VERIFY" ? "Verify Email" : "Reset Password"}
+                </a>
+                <p>If the button doesn't work, please copy and paste the link below into your browser:</p>
+                <p><a href="${process.env.DOMAIN}/verifyemail?token=${hashedToken}">${process.env.DOMAIN}/verifyemail?token=${hashedToken}</a></p>
+              </div>
+            </body>
+            </html>
+            `
+            ,
         }
 
         const mailresponse = await transport.sendMail(mailOptions);
