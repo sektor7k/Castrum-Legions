@@ -38,6 +38,7 @@ export default function LoginPage() {
         }
     }
 
+
     function showErrorToast(message: string): void {
         toast({
             variant: "destructive",
@@ -100,6 +101,9 @@ export default function LoginPage() {
                 
                 <Button variant={"link"} onClick={() => router.push("/signup")} className=" text-gray-500 mt-3">
                     Don&apos;t have an account? Register
+                </Button>
+                <Button variant={"link"} onClick={() => router.push("/forgotpassword")} className=" text-gray-500 mt-3">
+                    Forgot password
                 </Button>
 
                 <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
